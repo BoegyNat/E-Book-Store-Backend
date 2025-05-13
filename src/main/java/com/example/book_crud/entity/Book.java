@@ -27,6 +27,15 @@ public class Book {
     @Min(value = 1500, message = "Year must be after 1500")
     private int year;
 
+    @Column(length = 10000)
+    private String description;
+
+    @NotNull(message = "Image is required")
+    private String coverUrl;
+
+    @NotNull(message = "PDF is required")
+    private String pdfPath;
+
     // --- Getter & Setter ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -42,4 +51,14 @@ public class Book {
 
     public int getYear() { return year; }
     public void setYear(int year) { this.year = year; }
+
+    public String getDescription() {return description;}
+    public void setDescription(String description) {this.description = description;}
+
+    public String getCoverUrl() {return coverUrl;}
+    public void setCoverUrl(String coverUrl) {this.coverUrl = coverUrl;}
+
+    public String getPdfPath() {return pdfPath;}
+    public void setPdfPath(String pdfPath) {this.pdfPath = pdfPath;}
+
 }
