@@ -1,13 +1,13 @@
 package com.example.book_crud.service;
 
-
+import com.example.book_crud.dto.BookDto;
 import com.example.book_crud.entity.Book;
 import com.example.book_crud.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -19,27 +19,32 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    public Optional<Book> getBookById(Long id) {
-        return bookRepository.findById(id);
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found"));
     }
 
-    public Book saveBook(Book book) {
+    public Book createBook(BookDto dto) {
+        Book book = new Book();
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
+        book.setPrice(dto.getPrice());
+        book.setYear(dto.getYear());
+        book.setDescription(dto.getDescription());
+        book.setCoverUrl(dto.getCoverUrl());
+        book.setPdfPath(dto.getPdfPath());
         return bookRepository.save(book);
     }
 
-    public List<Book> saveAllBook( List<Book> books){
-        return bookRepository.saveAll(books);
-    }
-
-
-    public Book updateBook(Long id ,Book book){
-        return bookRepository.findById(id).map(book1 -> {
-            book1.setTitle(book.getTitle());
-            book1.setAuthor(book.getAuthor());
-            book1.setPrice(book.getPrice());
-            book1.setYear(book.getYear());
-            return bookRepository.save(book1);
-        }).orElseThrow(()-> new RuntimeException("Book not found"));
+    public Book updateBook(Long id, BookDto dto) {
+        Book book = getBookById(id);
+        book.setTitle(dto.getTitle());
+        book.setAuthor(dto.getAuthor());
+        book.setPrice(dto.getPrice());
+        book.setYear(dto.getYear());
+        book.setDescription(dto.getDescription());
+        book.setCoverUrl(dto.getCoverUrl());
+        book.setPdfPath(dto.getPdfPath());
+        return bookRepository.save(book);
     }
 
     public void deleteBook(Long id) {
